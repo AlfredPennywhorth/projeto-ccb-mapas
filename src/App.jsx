@@ -57,18 +57,9 @@ export default function App() {
       if (parseFloat(km) > grupos[destinoId].maxDist) grupos[destinoId].maxDist = parseFloat(km);
     });
 
-    const calcMedia = (num) => {
-      const sActive = SEDES_BASE.slice(0, num);
-      let tDist = 0;
-      DADOS_REAIS.forEach(c => {
-        let m = Math.min(...sActive.map(s => haversine(c.lat, c.lng, s.lat, s.lng)));
-        tDist += m;
-      });
-      return tDist / DADOS_REAIS.length;
-    };
-    const c1 = calcMedia(2);
-    const c2 = calcMedia(3);
-    const red = ((c1 - c2) / c1 * 100).toFixed(1);
+    const distC1 = DADOS_REAIS.reduce((acc, c) => acc + Math.min(...SEDES_BASE.slice(0,2).map(s => haversine(c.lat, c.lng, s.lat, s.lng))), 0);
+    const distC2 = DADOS_REAIS.reduce((acc, c) => acc + Math.min(...SEDES_BASE.slice(0,3).map(s => haversine(c.lat, c.lng, s.lat, s.lng))), 0);
+    const red = ((distC1 - distC2) / distC1 * 100).toFixed(1);
 
     let bounds = filtroSede && grupos[filtroSede] ? grupos[filtroSede].casas.map(c => [c.lat, c.lng]) : [];
     if (bounds.length > 0) bounds.push([grupos[filtroSede].info.lat, grupos[filtroSede].info.lng]);
@@ -81,13 +72,13 @@ export default function App() {
       
       <header style={{ padding: '12px 24px', background: '#0f172a', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 1000 }}>
         <div>
-          <h1 style={{ fontSize: '1.2rem', margin: 0, fontWeight: 'bold' }}>📊 Dashboard Estratégico CCB</h1>
+          <h1 style={{ fontSize: '1.2rem', margin: 0, fontWeight: 'bold' }}>📊 Simulador Estratégico CCB</h1>
           <button onClick={() => setFiltroSede(null)} style={{ background: '#334155', border: 'none', color: '#fff', fontSize: '0.65rem', padding: '4px 10px', borderRadius: '4px', cursor: 'pointer', marginTop: '6px' }}>Ver Mapa Completo</button>
         </div>
         
         <div style={{ display: 'flex', background: '#1e293b', padding: '4px', borderRadius: '8px', gap: '4px' }}>
-          <button onClick={() => setCenario(2)} style={{ padding: '8px 16px', border: 'none', borderRadius: '6px', background: cenario === 2 ? '#3b82f6' : 'transparent', color: 'white', fontWeight: 'bold' }}>2 Polos</button>
-          <button onClick={() => setCenario(3)} style={{ padding: '8px 16px', border: 'none', borderRadius: '6px', background: cenario === 3 ? '#7c3aed' : 'transparent', color: 'white', fontWeight: 'bold' }}>3 Polos</button>
+          <button onClick={() => {setCenario(2); setFiltroSede(null);}} style={{ padding: '8px 16px', border: 'none', borderRadius: '6px', background: cenario === 2 ? '#3b82f6' : 'transparent', color: 'white', fontWeight: 'bold' }}>2 Polos</button>
+          <button onClick={() => {setCenario(3); setFiltroSede(null);}} style={{ padding: '8px 16px', border: 'none', borderRadius: '6px', background: cenario === 3 ? '#7c3aed' : 'transparent', color: 'white', fontWeight: 'bold' }}>3 Polos</button>
         </div>
       </header>
 
@@ -102,26 +93,22 @@ export default function App() {
                   <div style={{ fontSize: '0.65rem', fontWeight: 'bold', color: s.info.cor }}>{s.info.nome}</div>
                   <div style={{ fontSize: '0.8rem', fontWeight: 'bold', marginTop: '5px' }}>{s.casas.length} <small style={{fontWeight:'normal'}}>casas</small></div>
                   <div style={{ fontSize: '0.6rem', color: '#64748b' }}>D: {s.d} | I: {s.i}</div>
+                  <div style={{ fontSize: '0.55rem', color: '#ef4444', marginTop: '3px' }}>Raio: {s.maxDist.toFixed(1)}km</div>
                 </div>
               ))}
             </div>
           </div>
 
           <div style={{ flex: 1, padding: '15px', overflowY: 'auto' }}>
-            <h3 style={{ fontSize: '0.7rem', color: '#94a3b8', marginBottom: '10px' }}>Listagem por Polo (Ordem Alfabética)</h3>
+            <h3 style={{ fontSize: '0.7rem', color: '#94a3b8', marginBottom: '10px' }}>Listagem (Ordem Alfabética)</h3>
             {Object.entries(setoresAtivos).map(([key, s]) => (
               <div key={key} style={{ marginBottom: '15px', padding: '10px', borderRadius: '10px', background: filtroSede === key ? `${s.info.cor}05` : '#fff', border: `1px solid ${filtroSede === key ? s.info.cor : '#f1f5f9'}` }}>
-                <div onClick={() => setFiltroSede(key)} style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem', color: s.info.cor, marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
-                  {s.info.nome} <span>Raio: {s.maxDist.toFixed(1)}km</span>
-                </div>
+                <div onClick={() => setFiltroSede(key)} style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem', color: s.info.cor, marginBottom: '8px' }}>{s.info.nome}</div>
                 <table style={{ width: '100%', fontSize: '0.65rem' }}>
                   <tbody>
-                    {/* AQUI ESTÁ A MUDANÇA: .sort por bairro (A-Z) */}
                     {s.casas.sort((a, b) => a.bairro.localeCompare(b.bairro)).map(c => (
                       <tr key={c.bairro} style={{ borderBottom: '1px solid #f8fafc' }}>
-                        <td style={{ padding: '4px 0', color: '#1e293b' }}>
-                          {c.isManual ? '📌 ' : ''}{c.bairro}
-                        </td>
+                        <td style={{ padding: '4px 0', color: '#1e293b' }}>{c.isManual ? '📌 ' : ''}{c.bairro}</td>
                         <td style={{ textAlign: 'right', color: '#64748b', paddingRight: '10px' }}>{c.km}km</td>
                         <td style={{ textAlign: 'right' }}>
                           <select 
@@ -145,7 +132,7 @@ export default function App() {
 
           <div style={{ padding: '20px', background: '#0f172a', textAlign: 'center' }}>
               <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: cenario === 3 ? '#a78bfa' : '#60a5fa' }}>-{metricas.red}% Deslocamento</div>
-              <div style={{ fontSize: '0.6rem', color: '#94a3b8', marginTop: '4px' }}>GANHO LOGÍSTICO (C1 vs C2)</div>
+              <div style={{ fontSize: '0.6rem', color: '#94a3b8', marginTop: '4px' }}>GANHO LOGÍSTICO MÉDIO</div>
           </div>
         </aside>
 
@@ -153,12 +140,22 @@ export default function App() {
           <MapContainer center={[-23.60, -46.48]} zoom={12} style={{ height: '100%', width: '100%' }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <MapController bounds={mapBounds} />
+            
+            {/* POLOS PRIMEIRO E SEM INTERATIVIDADE (O CLIQUE PASSA POR ELES) */}
             {Object.values(setoresAtivos).filter(s => !filtroSede || s.info.id === filtroSede).map(s => (
-              <CircleMarker key={s.info.id} center={[s.info.lat, s.info.lng]} radius={15} pathOptions={{ color: s.info.cor, fillColor: 'white', fillOpacity: 1, weight: 6, zIndex: 1000 }} />
+              <CircleMarker key={s.info.id} center={[s.info.lat, s.info.lng]} radius={15} pathOptions={{ color: s.info.cor, fillColor: 'white', fillOpacity: 1, weight: 6, interactive: false }} />
             ))}
+
+            {/* CASAS POR CIMA E CLICÁVEIS */}
             {Object.values(setoresAtivos).filter(s => !filtroSede || s.info.id === filtroSede).flatMap(s => s.casas).map((casa, idx) => (
-              <CircleMarker key={idx} center={[casa.lat, casa.lng]} radius={7} pathOptions={{ color: casa.isManual ? '#000' : 'white', fillColor: casa.cor, fillOpacity: 0.9, weight: casa.isManual ? 3 : 2 }}>
-                <Popup><b>{casa.bairro}</b><br/>Distância: {casa.km}km</Popup>
+              <CircleMarker key={idx} center={[casa.lat, casa.lng]} radius={7} pathOptions={{ color: casa.isManual ? '#000' : 'white', fillColor: casa.cor, fillOpacity: 0.9, weight: casa.isManual ? 3 : 2, interactive: true }}>
+                <Popup>
+                  <div style={{ textAlign: 'center' }}>
+                    <b style={{ color: casa.cor }}>{casa.bairro}</b><br/>
+                    Distância: {casa.km}km<br/>
+                    D/I: {casa.diaconos}/{casa.irmas}
+                  </div>
+                </Popup>
               </CircleMarker>
             ))}
           </MapContainer>
