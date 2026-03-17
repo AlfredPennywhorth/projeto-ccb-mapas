@@ -38,12 +38,12 @@ export default function App() {
     });
 
     dadosSetor.forEach(casa => {
-      if (casa.isPolo) return;
-
       let destinoId;
       const manualId = atribuicoes[casa.bairro];
 
-      if (manualId && manualId !== 'auto' && grupos[manualId]) {
+      if (casa.isPolo) {
+        destinoId = casa.bairro;
+      } else if (manualId && manualId !== 'auto' && grupos[manualId]) {
         destinoId = manualId;
       } else {
         let menorDist = Infinity;
@@ -126,14 +126,17 @@ export default function App() {
                 <table style={{ width: '100%', fontSize: '0.65rem' }}>
                   <tbody>
                     {s.casas.sort((a, b) => a.bairro.localeCompare(b.bairro)).map(c => (
-                      <tr key={c.bairro} style={{ borderBottom: '1px solid #f8fafc' }}>
-                        <td style={{ padding: '4px 0', color: '#1e293b' }}>{c.isManual ? '📌 ' : ''}{c.bairro}</td>
+                      <tr key={c.bairro} style={{ borderBottom: '1px solid #f8fafc', background: c.isPolo ? `${s.info.cor}10` : 'transparent' }}>
+                        <td style={{ padding: '4px 0', color: '#1e293b', fontWeight: c.isPolo ? 'bold' : 'normal' }}>
+                          {c.isPolo ? '⭐ ' : (c.isManual ? '📌 ' : '')}{c.bairro}
+                        </td>
                         <td style={{ textAlign: 'right', color: '#64748b', paddingRight: '10px' }}>{c.km}km</td>
                         <td style={{ textAlign: 'right' }}>
                           <select 
                             value={atribuicoes[c.bairro] || 'auto'}
                             onChange={(e) => setAtribuicoes(prev => ({...prev, [c.bairro]: e.target.value}))}
                             style={{ fontSize: '0.6rem', padding: '1px' }}
+                            disabled={c.isPolo}
                           >
                             <option value="auto">Auto</option>
                             {Object.keys(polosAtivos).map(pName => (

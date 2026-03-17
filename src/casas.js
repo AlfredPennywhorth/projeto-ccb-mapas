@@ -37,7 +37,7 @@ export const DADOS_REAIS = [
   { bairro: "PALANQUE II", lat: -23.607188, lng: -46.4241952, diaconos: 0, irmas: 4, setor: "Carrão" },
   { bairro: "PARQUE BOA ESPERANÇA", lat: -23.6030896, lng: -46.4539934, diaconos: 1, irmas: 5, setor: "Carrão" },
   { bairro: "PARQUE DAS FLORES", lat: -23.6389744, lng: -46.4760742, diaconos: 0, irmas: 2, setor: "Carrão" },
-  { bairro: "PARQUE MARIA LUIZA", lat: -23.5625656, lng: -46.5205505, diaconos: 2, irmas: 4, setor: "Carrão" },
+  { bairro: "PARQUE MARIA LUIZA", lat: -23.5625656, lng: -46.5205505, diaconos: 2, irmas: 4, setor: "Carrão", isPolo: true, cor: "#7c3aed" },
   { bairro: "PARQUE SÃO RAFAEL", lat: -23.6302066, lng: -46.5043938, diaconos: 2, irmas: 4, setor: "Carrão" },
   { bairro: "PARQUE SÃO RAFAEL - GLEBA II", lat: -23.6302066, lng: -46.5043938, diaconos: 0, irmas: 2, setor: "Carrão" },
   { bairro: "RECANTO IV PALANQUE", lat: -23.615373, lng: -46.4131436, diaconos: 0, irmas: 2, setor: "Carrão" },
@@ -47,7 +47,7 @@ export const DADOS_REAIS = [
   { bairro: "VILA ANTONINA", lat: -23.5486230, lng: -46.5538564, diaconos: 2, irmas: 4, setor: "Carrão" },
   { bairro: "VILA BANCÁRIA", lat: -23.589861, lng: -46.5228841, diaconos: 1, irmas: 4, setor: "Carrão" },
   { bairro: "VILA BELA", lat: -23.6160965, lng: -46.4543759, diaconos: 0, irmas: 2, setor: "Carrão" },
-  { bairro: "VILA CARRÃO", lat: -23.5507156, lng: -46.5395812, diaconos: 2, irmas: 5, setor: "Carrão", isPolo: true, cor: "#7c3aed" },
+  { bairro: "VILA CARRÃO", lat: -23.5507156, lng: -46.5395812, diaconos: 2, irmas: 5, setor: "Carrão" },
   { bairro: "VILA CARRÃO - ASILO", lat: -23.5473217, lng: -46.5441174, diaconos: 0, irmas: 1, setor: "Carrão" },
   { bairro: "VILA GIL", lat: -23.5928439, lng: -46.4380473, diaconos: 1, irmas: 5, setor: "Carrão" },
   { bairro: "VILA NOVA IORQUE", lat: -23.5765613, lng: -46.5065743, diaconos: 2, irmas: 5, setor: "Carrão" },
@@ -58,7 +58,7 @@ export const DADOS_REAIS = [
   { bairro: "BAIXADA DO GLICÉRIO", lat: -23.5547598, lng: -46.6320003, diaconos: 2, irmas: 3, setor: "Centro" },
   { bairro: "BARRA FUNDA", lat: -23.5301885, lng: -46.6605508, diaconos: 0, irmas: 4, setor: "Centro" },
   { bairro: "BELÉM", lat: -23.537693, lng: -46.587933, diaconos: 0, irmas: 3, setor: "Centro" },
-  { bairro: "BOM RETIRO", lat: -23.525064, lng: -46.644716, diaconos: 2, irmas: 6, setor: "Centro", isPolo: true, cor: "#10b981" },
+  { bairro: "BOM RETIRO", lat: -23.525064, lng: -46.644716, diaconos: 2, irmas: 6, setor: "Centro", isPolo: true, cor: "#10b981" }, // Verde Claro / Esmeralda
   { bairro: "BOSQUE DA SAÚDE", lat: -23.614630, lng: -46.629578, diaconos: 1, irmas: 3, setor: "Centro" },
   { bairro: "BRÁS", lat: -23.547889, lng: -46.610733, diaconos: 7, irmas: 8, setor: "Centro" },
   { bairro: "CAMBUCI", lat: -23.5650468, lng: -46.6171571, diaconos: 0, irmas: 0, setor: "Centro" },
@@ -74,7 +74,7 @@ export const DADOS_REAIS = [
   { bairro: "JARDIM MARIA ESTELA", lat: -23.631916, lng: -46.603486, diaconos: 0, irmas: 3, setor: "Centro" },
   { bairro: "JARDIM MIMAR", lat: -23.611543, lng: -46.523724, diaconos: 3, irmas: 7, setor: "Centro" },
   { bairro: "JARDIM PANORAMA", lat: -23.607037, lng: -46.535168, diaconos: 0, irmas: 7, setor: "Centro" },
-  { bairro: "JARDIM PLANALTO", lat: -23.604911, lng: -46.510784, diaconos: 4, irmas: 8, setor: "Centro", isPolo: true, cor: "#f59e0b" },
+  { bairro: "JARDIM PLANALTO", lat: -23.604911, lng: -46.510784, diaconos: 4, irmas: 8, setor: "Centro", isPolo: true, cor: "#f59e0b" }, // Âmbar / Laranja
   { bairro: "JARDIM SANTO EDUARDO", lat: -23.578480, lng: -46.524795, diaconos: 2, irmas: 3, setor: "Centro" },
   { bairro: "JARDIM SÃO NICOLAU", lat: -23.6128277, lng: -46.5344009, diaconos: 0, irmas: 1, setor: "Centro" },
   { bairro: "JARDIM SÃO ROBERTO", lat: -23.621621, lng: -46.498910, diaconos: 1, irmas: 3, setor: "Centro" },
@@ -102,8 +102,8 @@ export const DADOS_REAIS = [
   { bairro: "VILA INDEPENDÊNCIA - SÃO JOÃO CLÍMACO", lat: -23.618921, lng: -46.5890615, diaconos: 1, irmas: 2, setor: "Centro" },
   { bairro: "VILA LIVIERO", lat: -23.6470992, lng: -46.5965913, diaconos: 1, irmas: 4, setor: "Centro" },
   { bairro: "VILA MARIANA", lat: -23.600168, lng: -46.633674, diaconos: 4, irmas: 4, setor: "Centro" },
-  { bairro: "VILA MORAES", lat: -23.627131, lng: -46.619774, diaconos: 2, irmas: 7, setor: "Centro", isPolo: true, cor: "#ec4899" },
-  { bairro: "VILA PRUDENTE", lat: -23.5793797, lng: -46.5874004, diaconos: 3, irmas: 5, setor: "Centro", isPolo: true, cor: "#f43f5e" },
+  { bairro: "VILA MORAES", lat: -23.627131, lng: -46.619774, diaconos: 2, irmas: 7, setor: "Centro", isPolo: true, cor: "#6366f1" }, // Indigo / Azul Forte
+  { bairro: "VILA PRUDENTE", lat: -23.5793797, lng: -46.5874004, diaconos: 3, irmas: 5, setor: "Centro", isPolo: true, cor: "#ec4899" }, // Rosa Choque
   { bairro: "VILA RIO BRANCO", lat: -23.566795, lng: -46.564668, diaconos: 1, irmas: 4, setor: "Centro" }
 
 ];
